@@ -18,6 +18,7 @@ class Flight(models.Model):
         return reverse('flight-detail', args=[str(self.id)])
 
     class Meta:
+        db_table = 'flight'
         ordering = ['departure']
 
 
@@ -42,14 +43,18 @@ class FlightInstance(models.Model):
     )
 
     status = models.CharField(max_length=32, default='Scheduled', choices=STATUS)
-    departure = models.TimeField(help_text='Real flight departure time')
+    departure = models.DateTimeField(help_text='Real flight departure time')
     duration = models.DurationField(help_text='Real duration')
 
+    def all_code(self):
+       return f'{self.flight.code}-{self.code}'
+
     def arrive(self):
-        return sum_time_timedelta(self.departure, self.duration)
+        return self.departure + self.duration
 
     class Meta:
+        db_table = 'flight_instance'
         ordering = ['departure']
 
     def __str__(self):
-       return f'{self.flight.code}-{self.code}'
+       return self.all_code()
