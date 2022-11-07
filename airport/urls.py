@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('flight/', include('flight.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 
     # Add URL maps to redirect the base URL to our application
     path('', RedirectView.as_view(url='flight/', permanent=True)),
