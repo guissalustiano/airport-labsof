@@ -16,3 +16,7 @@ def index(request):
 
 class FlightListView(generic.ListView):
     model = Flight
+    paginate_by = 10
+
+class FlightDetailView(generic.DetailView):
+    model = Flight

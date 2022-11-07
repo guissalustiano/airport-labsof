@@ -1,16 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Book List</h1>
+  <h1>Flight List</h1>
   {% if flight_list %}
   <ul>
     {% for flight in flight_list %}
       <li>
-        <a href="">{{ flight.code }}</a> ({{ flight.departure}} to {{ flight.arrive }})
+        <a href="{{ flight.get_absolute_url }}">{{ flight.code }}</a> ({{ flight.departure}} to {{ flight.arrive }})
       </li>
     {% endfor %}
   </ul>
   {% else %}
-    <p>There are no books in the library.</p>
+    <p>There are no flight in the system.</p>
   {% endif %}
 {% endblock %}
