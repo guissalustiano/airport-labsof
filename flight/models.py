@@ -1,10 +1,15 @@
 from django.db import models
 from django.urls import reverse
 
+from flight.helper import sum_time_timedelta
+
 class Flight(models.Model):
     code = models.CharField(max_length=32, unique=True, help_text='Código unico')
     departure = models.TimeField(help_text='Expected flight departure time')
     duration = models.DurationField(help_text='Expected duration')
+
+    def arrive(self):
+        return sum_time_timedelta(self.departure, self.duration)
 
     def __str__(self):
         return self.code
@@ -39,6 +44,9 @@ class FlightInstance(models.Model):
     status = models.CharField(max_length=32, default='Scheduled', choices=STATUS)
     departure = models.TimeField(help_text='Real flight departure time')
     duration = models.DurationField(help_text='Real duration')
+
+    def arrive(self):
+        return sum_time_timedelta(self.departure, self.duration)
 
     class Meta:
         ordering = ['departure']
