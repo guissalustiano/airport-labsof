@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 from .models import Flight
 
@@ -20,3 +21,15 @@ class FlightListView(generic.ListView):
 
 class FlightDetailView(generic.DetailView):
     model = Flight
+
+class FlightCreate(generic.CreateView):
+    model = Flight
+    fields = '__all__'
+
+class FlightUpdate(generic.CreateView):
+    model = Flight
+    fields = '__all__'
+
+class FlightDelete(generic.DeleteView):
+    model = Flight
+    success_url = reverse_lazy('flights')

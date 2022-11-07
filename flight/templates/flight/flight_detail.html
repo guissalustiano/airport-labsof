@@ -1,6 +1,9 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+  <a href="{{flight.get_absolute_url}}/update/">Update</a>
+  <a href="{{flight.get_absolute_url}}/delete/">Delete</a>
+
   <h1>Code: {{ flight.code }}</h1>
 
   <p><strong>Departure:</strong> {{ flight.departure }}</p>
