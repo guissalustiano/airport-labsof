@@ -52,9 +52,12 @@ class FlightInstance(models.Model):
     def arrive(self):
         return self.departure + self.duration
 
+    def __str__(self):
+       return self.all_code()
+
+    def get_absolute_url(self):
+        return reverse('flightinstance-detail', args=[str(self.id)])
+
     class Meta:
         db_table = 'flight_instance'
         ordering = ['departure']
-
-    def __str__(self):
-       return self.all_code()

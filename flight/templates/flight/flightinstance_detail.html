@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <a href="{{flightinstance.get_absolute_url}}/update/">Update</a>
+  <a href="{{flightinstance.get_absolute_url}}/delete/">Delete</a>
+
+  <h1>Code: {{ flightinstance.all_code }}</h1>
+
+  <p><strong>Status:</strong> {{ flightinstance.status }}</p>
+  <p><strong>Departure:</strong> {{ flightinstance.departure }}</p>
+  <p><strong>Duration:</strong> {{ flightinstance.duration }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Flight</h4>
+      <p><strong>Code:</strong> {{ flightinstance.flight.code }}</p>
+      <p><strong>Departure:</strong> {{ flightinstance.flight.departure }}</p>
+      <p><strong>Duration:</strong> {{ flightinstance.flight.duration }}</p>
+  </div>
+{% endblock %}

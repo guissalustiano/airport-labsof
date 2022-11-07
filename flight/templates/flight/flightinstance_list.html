@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Flight Instance List</h1>
+  {% if flightinstance_list %}
+  <ul>
+    {% for flightinstance in flightinstance_list %}
+      <li>
+        <a href="{{ flightinstance.get_absolute_url }}">{{ flightinstance.all_code }}</a> ({{ flightinstance.departure}} to {{ flightinstance.arrive }})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no flight in the system.</p>
+  {% endif %}
+{% endblock %}
