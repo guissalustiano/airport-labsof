@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Book List</h1>
+  {% if flight_list %}
+  <ul>
+    {% for flight in flight_list %}
+      <li>
+        <a href="">{{ flight.code }}</a> ({{ flight.departure}} to {{ flight.arrive }})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}
+{% endblock %}

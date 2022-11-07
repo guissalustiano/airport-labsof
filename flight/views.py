@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views import generic
 from .models import Flight
 
 def index(request):
@@ -12,3 +13,6 @@ def index(request):
     }
 
     return render(request, 'index.html', context=context)
+
+class FlightListView(generic.ListView):
+    model = Flight
