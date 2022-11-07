@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Flight Monitor Home</h1>
+  <p>Welcome to Monitor, a website made for monitoring flights!</p>
+
+  <h2>Dynamic content</h2>
+  <p>The system has the following record counts:</p>
+  <ul>
+    <li><strong>Flight:</strong> {{ num_flight }}</li>
+  </ul>
+{% endblock %}

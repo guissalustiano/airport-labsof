@@ -1,3 +1,14 @@
 from django.shortcuts import render
+from .models import Flight
 
-# Create your views here.
+def index(request):
+    """View function for home page of site."""
+
+    # Generate counts of some of the main objects
+    num_flight = Flight.objects.all().count()
+
+    context = {
+        'num_flight': num_flight
+    }
+
+    return render(request, 'index.html', context=context)
