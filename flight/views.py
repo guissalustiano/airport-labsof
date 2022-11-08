@@ -2,6 +2,8 @@ from collections.abc import Callable
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from .models import Airport, Flight, FlightInstance
 
 def index(request):
@@ -19,58 +21,72 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 # Flight
-class FlightListView(generic.ListView):
+class FlightListView(PermissionRequiredMixin, generic.ListView):
     model = Flight
     paginate_by = 10
+    permission_required = 'flight.can_list'
 
-class FlightDetailView(generic.DetailView):
+class FlightDetailView(PermissionRequiredMixin, generic.DetailView):
     model = Flight
+    permission_required = 'flight.can_detail'
 
-class FlightCreate(generic.CreateView):
-    model = Flight
-    fields = '__all__'
-
-class FlightUpdate(generic.CreateView):
+class FlightCreate(PermissionRequiredMixin, generic.CreateView):
     model = Flight
     fields = '__all__'
+    permission_required = 'flight.can_create'
 
-class FlightDelete(generic.DeleteView):
+class FlightUpdate(PermissionRequiredMixin, generic.CreateView):
+    model = Flight
+    fields = '__all__'
+    permission_required = 'flight.can_update'
+
+class FlightDelete(PermissionRequiredMixin, generic.DeleteView):
     model = Flight
     success_url = reverse_lazy('flights')
+    permission_required = 'flight.can_delete'
 
 # FlightInstance
-class FlightInstanceListView(generic.ListView):
+class FlightInstanceListView(PermissionRequiredMixin, generic.ListView):
     model = FlightInstance
     paginate_by = 10
+    permission_required = 'flightinstance.can_list'
 
-class FlightInstanceDetailView(generic.DetailView):
+class FlightInstanceDetailView(PermissionRequiredMixin, generic.DetailView):
     model = FlightInstance
+    permission_required = 'flightinstance.can_detail'
 
-class FlightInstanceCreate(generic.CreateView):
-    model = FlightInstance
-    fields = '__all__'
-
-class FlightInstanceUpdate(generic.CreateView):
+class FlightInstanceCreate(PermissionRequiredMixin, generic.CreateView):
     model = FlightInstance
     fields = '__all__'
+    permission_required = 'flightinstance.can_create'
 
-class FlightInstanceDelete(generic.DeleteView):
+class FlightInstanceUpdate(PermissionRequiredMixin, generic.CreateView):
+    model = FlightInstance
+    fields = '__all__'
+    permission_required = 'flightinstance.can_update'
+
+class FlightInstanceDelete(PermissionRequiredMixin, generic.DeleteView):
     model = FlightInstance
     success_url = reverse_lazy('flights')
+    permission_required = 'flightinstance.can_delete'
 
 # Airport
-class AirportListView(generic.ListView):
+class AirportListView(PermissionRequiredMixin, generic.ListView):
     model = Airport
     paginate_by = 10
+    permission_required = 'airport.can_list'
 
-class AirportDetailView(generic.DetailView):
+class AirportDetailView(PermissionRequiredMixin, generic.DetailView):
     model = Airport
+    permission_required = 'airport.can_detail'
 
 # Report
+@permission_required('flightinstance.can_report_list')
 def report_view(request):
     return render(request, 'flight/report_index.html')
 
 def group_flights_by(f: Callable[[FlightInstance], str]):
+    """Auxiliar function to group flights instances"""
     flights = FlightInstance.objects.all()
     groups = dict()
 
@@ -84,6 +100,7 @@ def group_flights_by(f: Callable[[FlightInstance], str]):
 
     return groups
 
+@permission_required('flightinstance.can_report_arrive')
 def report_arrival_airport_view(request):
     context = {
         'title': 'Report by arrival airport',
@@ -91,6 +108,7 @@ def report_arrival_airport_view(request):
     }
     return render(request, 'flight/report_list.html', context=context)
 
+@permission_required('flightinstance.can_report_departure')
 def report_departure_airport_view(request):
     context = {
         'title': 'Report by departure airport',
@@ -98,6 +116,7 @@ def report_departure_airport_view(request):
     }
     return render(request, 'flight/report_list.html', context=context)
 
+@permission_required('flightinstance.can_report_statue')
 def report_flight_instance_status_view(request):
     context = {
         'title': 'Report by status',

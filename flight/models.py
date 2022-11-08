@@ -25,6 +25,10 @@ class Airport(models.Model):
 
     class Meta:
         db_table = 'airport'
+        permissions = (
+            ('can_list', 'List airport (monitor)'),
+            ('can_detail', 'Detail airport (monitor)'),
+        )
 
 class Company(models.Model):
     name = models.CharField(max_length=256)
@@ -56,6 +60,13 @@ class Flight(models.Model):
     class Meta:
         db_table = 'flight'
         ordering = ['departure']
+        permissions = (
+            ('can_create', 'Create flight'),
+            ('can_update', 'Update flight'),
+            ('can_delete', 'Delete flight'),
+            ('can_list', 'List flight'),
+            ('can_detail', 'Detail flight'),
+        )
 
 
 class FlightInstance(models.Model):
@@ -97,3 +108,15 @@ class FlightInstance(models.Model):
     class Meta:
         db_table = 'flight_instance'
         ordering = ['departure']
+        permissions = (
+            ('can_create', 'Create flightinstance'),
+            ('can_update', 'Update flightinstance'),
+            ('can_delete', 'Delete flightinstance'),
+            ('can_list', 'List flightinstance'),
+            ('can_detail', 'Detail flightinstance'),
+
+            ('can_report_list', 'List report'),
+            ('can_report_arrive', 'Arrive airport report'),
+            ('can_report_departure', 'Departure airport report'),
+            ('can_report_statue', 'Flight Status report'),
+        )
