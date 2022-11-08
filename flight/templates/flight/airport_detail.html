@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Code: {{ airport.code }}</h1>
+
+  <p><strong>Name:</strong> {{ airport.name }}</p>
+  <p><strong>Code:</strong> {{ airport.code }}</p>
+  <p><strong>City:</strong> {{ airport.city }}</p>
+  <p><strong>Country:</strong> {{ airport.country }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Arrive instances</h4>
+
+    {% for instance in airport.arrival_instances %}
+      <hr>
+      <p><strong>Code:</strong> {{ instance.code }}</p>
+      <p><strong>Status:</strong> {{ instance.status }}</p>
+      <p><strong>Departure:</strong> {{ instance.departure }}</p>
+      <p><strong>Duration:</strong> {{ instance.duration }}</p>
+    {% endfor %}
+  </div>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Departure instances</h4>
+
+    {% for instance in airport.departure_instances %}
+      <hr>
+      <p><strong>Code:</strong> {{ instance.code }}</p>
+      <p><strong>Status:</strong> {{ instance.status }}</p>
+      <p><strong>Departure:</strong> {{ instance.departure }}</p>
+      <p><strong>Duration:</strong> {{ instance.duration }}</p>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -15,7 +15,7 @@
   <div style="margin-left:20px;margin-top:20px">
     <h4>Instances</h4>
 
-    {% for instance in flight.flightinstance_set.all %}
+    {% for instance in flight.instance.all %}
       <hr>
       <p><strong>Code:</strong> {{ instance.code }}</p>
       <p><strong>Status:</strong> {{ instance.status }}</p>

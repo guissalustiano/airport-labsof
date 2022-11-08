@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import Flight, FlightInstance
+from .models import Airport, Flight, FlightInstance
 
 def index(request):
     """View function for home page of site."""
@@ -56,3 +56,10 @@ class FlightInstanceUpdate(generic.CreateView):
 class FlightInstanceDelete(generic.DeleteView):
     model = FlightInstance
     success_url = reverse_lazy('flights')
+
+class AirportListView(generic.ListView):
+    model = Airport
+    paginate_by = 10
+
+class AirportDetailView(generic.DetailView):
+    model = Airport

@@ -8,9 +8,20 @@ class Airport(models.Model):
     code = models.CharField(max_length=32, unique=True, null=False)
     city = models.CharField(max_length=256, null=False)
     country = models.CharField(max_length=256, null=False)
+    # arrival (Generate by Flight)
+    # departure (Generate by Flight)
+
+    def departure_instances(self):
+        return [inst for flight in self.departure.all() for inst in flight.instance.all()]
+
+    def arrival_instances(self):
+        return [inst for flight in self.arrival.all() for inst in flight.instance.all()]
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('airport-detail', args=[str(self.id)])
 
     class Meta:
         db_table = 'airport'
@@ -49,7 +60,7 @@ class Flight(models.Model):
 
 class FlightInstance(models.Model):
     code = models.CharField(max_length=32, help_text='Code for instance, it will concat to flight')
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
+    flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='instance')
 
     # https://www.flightview.com/travelTools/FTHelp/Flight_Status.htm
     STATUS = (

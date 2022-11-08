@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Airport List</h1>
+  {% if airport_list %}
+  <ul>
+    {% for airport in airport_list %}
+      <li>
+        <a href="{{ airport.get_absolute_url }}">{{ airport.code }}</a> ({{ airport.name}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no flight in the system.</p>
+  {% endif %}
+{% endblock %}

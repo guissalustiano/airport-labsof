@@ -21,6 +21,7 @@
             <li><a href="{% url 'flight-create' %}">Create flights</a></li>
             <li><a href="{% url 'flightinstances' %}">All flights instances</a></li>
             <li><a href="{% url 'flightinstance-create' %}">Create flights instance</a></li>
+            <li><a href="{% url 'airports' %}">All airports</a></li>
 
             {% if user.is_authenticated %}
               <li>User: {{ user.get_username }}</li>
