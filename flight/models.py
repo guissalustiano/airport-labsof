@@ -3,10 +3,35 @@ from django.urls import reverse
 
 from flight.helper import sum_time_timedelta
 
+class Airport(models.Model):
+    name = models.CharField(max_length=256, null=False)
+    code = models.CharField(max_length=32, unique=True, null=False)
+    city = models.CharField(max_length=256, null=False)
+    country = models.CharField(max_length=256, null=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'airport'
+
+class Company(models.Model):
+    name = models.CharField(max_length=256)
+    website = models.URLField(null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'company'
+
 class Flight(models.Model):
     code = models.CharField(max_length=32, unique=True, help_text='Código unico')
     departure = models.TimeField(help_text='Expected flight departure time')
     duration = models.DurationField(help_text='Expected duration')
+    departure_airport = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='departure')
+    arrival_airport = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='arrival')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def arrive(self):
         return sum_time_timedelta(self.departure, self.duration)
@@ -24,7 +49,7 @@ class Flight(models.Model):
 
 class FlightInstance(models.Model):
     code = models.CharField(max_length=32, help_text='Code for instance, it will concat to flight')
-    flight = models.ForeignKey(Flight, on_delete=models.PROTECT)
+    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
 
     # https://www.flightview.com/travelTools/FTHelp/Flight_Status.htm
     STATUS = (

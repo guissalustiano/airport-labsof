@@ -12,8 +12,10 @@
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Flight</h4>
-      <p><strong>Code:</strong> {{ flightinstance.flight.code }}</p>
-      <p><strong>Departure:</strong> {{ flightinstance.flight.departure }}</p>
-      <p><strong>Duration:</strong> {{ flightinstance.flight.duration }}</p>
+      <p><strong>Company:</strong> {{ flightinstance.flight.company }}</p>
+      <p><strong>Expected Departure:</strong> {{ flightinstance.flight.departure }}</p>
+      <p><strong>Expected Duration:</strong> {{ flightinstance.flight.duration }}</p>
+      <p><strong>Departure Airport:</strong> {{ flightinstance.flight.departure_airport }}</p>
+      <p><strong>Arrival Airport:</strong> {{ flightinstance.flight.arrival_airport }}</p>
   </div>
 {% endblock %}
