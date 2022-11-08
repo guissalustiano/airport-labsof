@@ -17,3 +17,8 @@ python manage.py createsuperuser
 # Run server
 python manage.py runserver
 ```
+
+# Run tests
+```bash
+python manage.py test
+```
