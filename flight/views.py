@@ -35,7 +35,7 @@ class FlightCreate(PermissionRequiredMixin, generic.CreateView):
     fields = '__all__'
     permission_required = 'flight.can_create'
 
-class FlightUpdate(PermissionRequiredMixin, generic.CreateView):
+class FlightUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = Flight
     fields = '__all__'
     permission_required = 'flight.can_update'
@@ -60,7 +60,7 @@ class FlightInstanceCreate(PermissionRequiredMixin, generic.CreateView):
     fields = '__all__'
     permission_required = 'flightinstance.can_create'
 
-class FlightInstanceUpdate(PermissionRequiredMixin, generic.CreateView):
+class FlightInstanceUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = FlightInstance
     fields = '__all__'
     permission_required = 'flightinstance.can_update'
