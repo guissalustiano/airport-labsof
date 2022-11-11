@@ -76,6 +76,7 @@ class FlightInstance(models.Model):
     # https://www.flightview.com/travelTools/FTHelp/Flight_Status.htm
     STATUS = (
         ('Scheduled', 'Scheduled'), # Flight is not airborne. Departure and arrival times are according to airline's schedule.
+        ('Onbording', 'Onbording'), # 
         ('Delayed', 'Delayed'), # Flight will depart 15 or more minutes after its scheduled departure
         ('Departed', 'Departed'), # Flight has left the departure gate but may not be airborne yet.
         ('In Air', 'In Air'), # Flight is airborne. Takeoff time is actual takeoff or "wheels up" time. The arrival time is estimated. Real-time map is available.

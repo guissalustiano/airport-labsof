@@ -37,7 +37,8 @@ class FlightCreate(PermissionRequiredMixin, generic.CreateView):
 
 class FlightUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = Flight
-    fields = '__all__'
+    fields = ('departure_airport', 'arrival_airport', 'duration', 'departure')
+    # readonly_fields = ('code', )
     permission_required = 'flight.can_update'
 
 class FlightDelete(PermissionRequiredMixin, generic.DeleteView):
@@ -63,6 +64,7 @@ class FlightInstanceCreate(PermissionRequiredMixin, generic.CreateView):
 class FlightInstanceUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = FlightInstance
     fields = '__all__'
+    exclude = ('code', )
     permission_required = 'flightinstance.can_update'
 
 class FlightInstanceDelete(PermissionRequiredMixin, generic.DeleteView):
