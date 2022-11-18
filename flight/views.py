@@ -33,7 +33,6 @@ class FlightDetailView(PermissionRequiredMixin, generic.DetailView):
 
 class FlightCreate(PermissionRequiredMixin, generic.CreateView):
     model = Flight
-    # fields = '__all__'
     permission_required = 'flight.add_flight'
     form_class = FlightForm
 
