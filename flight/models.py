@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import RegexValidator
 
 from flight.helper import sum_time_timedelta
 
@@ -37,7 +38,8 @@ class Company(models.Model):
         db_table = 'company'
 
 class Flight(models.Model):
-    code = models.CharField(max_length=32, unique=True, help_text='Código unico')
+    validate_code = RegexValidator('^[A-Z]{6}[0-9]+$', 'Code must be in the format ABCDEF1234')
+    code = models.CharField(max_length=32, unique=True, help_text='Código unico', validators=[validate_code])
     departure = models.TimeField(help_text='Expected flight departure time')
     duration = models.DurationField(help_text='Expected duration')
     departure_airport = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='departure')
@@ -59,7 +61,8 @@ class Flight(models.Model):
 
 
 class FlightInstance(models.Model):
-    code = models.CharField(max_length=32, help_text='Code for instance, it will concat to flight')
+    validate_code = RegexValidator('^[0-9]+$', 'Code must be in the format 1234')
+    code = models.CharField(max_length=32, unique=True, help_text='Code for instance, it will concat to flight', validators=[validate_code])
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='instance')
 
     # https://www.flightview.com/travelTools/FTHelp/Flight_Status.htm

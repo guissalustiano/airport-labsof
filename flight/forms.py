@@ -2,24 +2,12 @@ from django import forms
 from .models import Flight, FlightInstance
 
 class FlightForm(forms.ModelForm):
-    def clean_code(self):
-        code = self.cleaned_data['code']
-        if code == 'ABC':
-            raise forms.ValidationError('Code cannot be ABC')
-        return code
-
     class Meta:
         model = Flight
         fields = '__all__' 
 
 
 class FlightInstanceForm(forms.ModelForm):
-    def clean_code(self):
-        code = self.cleaned_data['code']
-        if code == 'ABC':
-            raise forms.ValidationError('Code cannot be ABC')
-        return code
-
     def clean_status(self):
 
         allowed_transitions = {
