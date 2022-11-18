@@ -34,6 +34,18 @@ class FlightInstanceForm(forms.ModelForm):
         if selected_status not in allowed_next_statuses:
             raise forms.ValidationError(f'Status {selected_status} not allowed')
         return selected_status
+
+    def clean_departure(self):
+        current_status = self.initial.get('status', 'Scheduled')
+
+        new_departure = self.cleaned_data['departure']
+        if self.initial.get('departure')==new_departure:
+            return new_departure
+        
+        if current_status != 'Departed':
+            raise forms.ValidationError('Departure time can only be updated when status is Departed')
+
+        return new_departure
     
     class Meta:
         model = FlightInstance
