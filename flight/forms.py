@@ -46,6 +46,18 @@ class FlightInstanceForm(forms.ModelForm):
             raise forms.ValidationError('Departure time can only be updated when status is Departed')
 
         return new_departure
+
+    def clean_duration(self):
+        current_status = self.initial.get('status', 'Scheduled')
+
+        new_duration = self.cleaned_data['duration']
+        if self.initial.get('duration')==new_duration:
+            return new_duration
+        
+        if current_status not in ('Departed', 'Arrived'):
+            raise forms.ValidationError('duration time can only be updated when status is Departed')
+
+        return new_duration
     
     class Meta:
         model = FlightInstance
