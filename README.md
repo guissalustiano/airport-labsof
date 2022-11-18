@@ -22,3 +22,10 @@ python manage.py runserver
 ```bash
 python manage.py test
 ```
+
+# Default users
+manager@mail.com
+operation@mail.com
+pilot@mail.com
+
+senha: 1234$qwer
