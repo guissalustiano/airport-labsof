@@ -25,53 +25,53 @@ def index(request):
 class FlightListView(PermissionRequiredMixin, generic.ListView):
     model = Flight
     paginate_by = 10
-    permission_required = 'flight.can_list'
+    permission_required = 'flight.view_flight'
 
 class FlightDetailView(PermissionRequiredMixin, generic.DetailView):
     model = Flight
-    permission_required = 'flight.can_detail'
+    permission_required = 'flight.view_flight'
 
 class FlightCreate(PermissionRequiredMixin, generic.CreateView):
     model = Flight
     # fields = '__all__'
-    permission_required = 'flight.can_create'
+    permission_required = 'flight.add_flight'
     form_class = FlightForm
 
 class FlightUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = Flight
     fields = ('departure_airport', 'arrival_airport', 'duration', 'departure')
     # readonly_fields = ('code', )
-    permission_required = 'flight.can_update'
+    permission_required = 'flight.change_flight'
 
 class FlightDelete(PermissionRequiredMixin, generic.DeleteView):
     model = Flight
     success_url = reverse_lazy('flights')
-    permission_required = 'flight.can_delete'
+    permission_required = 'flight.delete_flight'
 
 # FlightInstance
 class FlightInstanceListView(PermissionRequiredMixin, generic.ListView):
     model = FlightInstance
     paginate_by = 10
-    permission_required = 'flightinstance.can_list'
+    permission_required = 'flight.view_flightinstance'
 
 class FlightInstanceDetailView(PermissionRequiredMixin, generic.DetailView):
     model = FlightInstance
-    permission_required = 'flightinstance.can_detail'
+    permission_required = 'flight.view_flightinstance'
 
 class FlightInstanceCreate(PermissionRequiredMixin, generic.CreateView):
     model = FlightInstance
     fields = '__all__'
-    permission_required = 'flightinstance.can_create'
+    permission_required = 'flight.view_flightinstance'
 
 class FlightInstanceUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = FlightInstance
     form_class = FlightInstanceForm
-    permission_required = 'flightinstance.can_update'
+    permission_required = 'flight.change_flightinstance'
 
 class FlightInstanceDelete(PermissionRequiredMixin, generic.DeleteView):
     model = FlightInstance
     success_url = reverse_lazy('flights')
-    permission_required = 'flightinstance.can_delete'
+    permission_required = 'flightinstance.delete_flightinstance'
 
 # Airport
 class AirportListView(PermissionRequiredMixin, generic.ListView):
@@ -84,7 +84,7 @@ class AirportDetailView(PermissionRequiredMixin, generic.DetailView):
     permission_required = 'airport.can_detail'
 
 # Report
-@permission_required('flightinstance.can_report_list')
+@permission_required('flight.can_list_report')
 def report_view(request):
     return render(request, 'flight/report_index.html')
 
@@ -103,7 +103,7 @@ def group_flights_by(f: Callable[[FlightInstance], str]):
 
     return groups
 
-@permission_required('flightinstance.can_report_arrive')
+@permission_required('flight.can_arrive_report')
 def report_arrival_airport_view(request):
     context = {
         'title': 'Report by arrival airport',
@@ -111,7 +111,7 @@ def report_arrival_airport_view(request):
     }
     return render(request, 'flight/report_list.html', context=context)
 
-@permission_required('flightinstance.can_report_departure')
+@permission_required('flight.can_departure_report')
 def report_departure_airport_view(request):
     context = {
         'title': 'Report by departure airport',
@@ -119,7 +119,7 @@ def report_departure_airport_view(request):
     }
     return render(request, 'flight/report_list.html', context=context)
 
-@permission_required('flightinstance.can_report_statue')
+@permission_required('flight.can_status_report')
 def report_flight_instance_status_view(request):
     context = {
         'title': 'Report by status',
