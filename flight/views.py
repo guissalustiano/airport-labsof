@@ -5,6 +5,7 @@ from django.views import generic
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .models import Airport, Flight, FlightInstance
+from .forms import FlightForm, FlightInstanceForm
 
 def index(request):
     """View function for home page of site."""
@@ -32,8 +33,9 @@ class FlightDetailView(PermissionRequiredMixin, generic.DetailView):
 
 class FlightCreate(PermissionRequiredMixin, generic.CreateView):
     model = Flight
-    fields = '__all__'
+    # fields = '__all__'
     permission_required = 'flight.can_create'
+    form_class = FlightForm
 
 class FlightUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = Flight
@@ -63,8 +65,7 @@ class FlightInstanceCreate(PermissionRequiredMixin, generic.CreateView):
 
 class FlightInstanceUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = FlightInstance
-    fields = '__all__'
-    exclude = ('code', )
+    form_class = FlightInstanceForm
     permission_required = 'flightinstance.can_update'
 
 class FlightInstanceDelete(PermissionRequiredMixin, generic.DeleteView):
