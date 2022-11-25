@@ -6,7 +6,7 @@
   <ul>
     {% for flight in flight_list %}
       <li>
-        <a href="{{ flight.get_absolute_url }}">{{ flight.code }}</a> ({{ flight.departure}} to {{ flight.arrive }})
+        <a href="{{ flight.get_absolute_url }}">{{ flight.code }}</a> (Expected time: {{ flight.time}} Airport: {{ flight.airport}})
       </li>
     {% endfor %}
   </ul>

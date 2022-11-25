@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Flight Instance Table</h1>
+  {% if flightinstance_list %}
+    <table>
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Real time
+            </th>
+            <th>
+                Airport
+            </th>
+
+        </tr>
+        {% for flightinstance in flightinstance_list %}
+            <tr>
+                <td>
+                    {{flightinstance.flight.code}} - {{flightinstance.code}}
+                </td>
+                <td>
+                    {{flightinstance.status}}
+                </td>
+                <td>
+                    {{flightinstance.time}}
+                </td>
+                <td>
+                    {{flightinstance.flight.airport}}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+  {% else %}
+    <p>There are no flight in the system.</p>
+  {% endif %}
+{% endblock %}

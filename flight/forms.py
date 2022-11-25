@@ -1,5 +1,6 @@
 from django import forms
 from .models import Flight, FlightInstance
+from datetime import datetime
 
 class FlightForm(forms.ModelForm):
     class Meta:
@@ -19,49 +20,31 @@ class FlightInstanceForm(forms.ModelForm):
             'Cancelled': ['Cancelled']
         }
 
-
-        # objects = Flight.objects.all()
-        # print(self)
-        # print(self.__dict__)
-        # print(objects[0][])
-        # pega current_status a partir do objects
-        # current_status = 'Scheduled'
-
-        current_status = self.initial.get('status', 'Scheduled')
         selected_status = self.cleaned_data['status']
+        current_status = self.initial.get('status', 'Scheduled')
 
         allowed_next_statuses = allowed_transitions.get(current_status, ['Scheduled'])
         if selected_status not in allowed_next_statuses:
             raise forms.ValidationError(f'Status {selected_status} not allowed')
         return selected_status
 
-    def clean_departure(self):
-        current_status = self.initial.get('status', 'Scheduled')
+    def clean_time(self):
+        code = self.__dict__['cleaned_data']['flight']
+        flight = Flight.objects.get(code=code)
+        direction = flight.__dict__['direction']
+        selected_status = self.cleaned_data['status']
+        arriving = selected_status == 'Arrived' and direction == 'A'
+        departing = selected_status == 'Departed' and direction == 'D'
+        if arriving or departing:
+            return datetime.now()
 
-        new_departure = self.cleaned_data['departure']
-        if self.initial.get('departure')==new_departure:
-            return new_departure
-        
-        if current_status != 'Departed':
-            raise forms.ValidationError('Departure time can only be updated when status is Departed')
+        old_time = self.initial.get('time', datetime.now())
+        return old_time
 
-        return new_departure
-
-    def clean_duration(self):
-        current_status = self.initial.get('status', 'Scheduled')
-
-        new_duration = self.cleaned_data['duration']
-        if self.initial.get('duration')==new_duration:
-            return new_duration
-        
-        if current_status not in ('Departed', 'Arrived'):
-            raise forms.ValidationError('duration time can only be updated when status is Departed')
-
-        return new_duration
     
     class Meta:
         model = FlightInstance
         fields = '__all__'
-        exclude = ('code', )
+        exclude = ('code',)
 
     

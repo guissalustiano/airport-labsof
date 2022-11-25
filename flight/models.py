@@ -43,7 +43,7 @@ class Flight(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def arrive(self):
-        return sum_time_timedelta(self.departure, self.duration)
+        return self.time
 
     def __str__(self):
         return self.code
@@ -51,6 +51,9 @@ class Flight(models.Model):
     def get_absolute_url(self):
         return reverse('flight-detail', args=[str(self.id)])
 
+    def get_direction(self):
+        return self.direction
+    
     class Meta:
         db_table = 'flight'
         ordering = ['time']
@@ -71,7 +74,8 @@ class FlightInstance(models.Model):
         ('Cancelled', 'Cancelled'), # Flight has been cancelled.
     )
 
-    status = models.CharField(max_length=32, default='Scheduled', choices=STATUS)
+
+    status = models.CharField(max_length=32, choices=STATUS)
     time = models.DateTimeField(help_text='Real flight departure or arrived time')
 
     def all_code(self):

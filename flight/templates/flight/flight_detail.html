@@ -7,10 +7,8 @@
   <h1>Code: {{ flight.code }}</h1>
 
   <p><strong>Company:</strong> {{ flight.company }}</p>
-  <p><strong>Expected Departure:</strong> {{ flight.departure }}</p>
-  <p><strong>Expected Duration:</strong> {{ flight.duration }}</p>
-  <p><strong>Departure Airport:</strong> {{ flight.departure_airport }}</p>
-  <p><strong>Arrival Airport:</strong> {{ flight.arrival_airport }}</p>
+  <p><strong>Expected Time:</strong> {{ flight.time }}</p>
+  <p><strong>Airport:</strong> {{ flight.airport }}</p>
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Instances</h4>
@@ -19,8 +17,7 @@
       <hr>
       <p><strong>Code:</strong> {{ instance.code }}</p>
       <p><strong>Status:</strong> {{ instance.status }}</p>
-      <p><strong>Departure:</strong> {{ instance.departure }}</p>
-      <p><strong>Duration:</strong> {{ instance.duration }}</p>
+      <p><strong>Real time:</strong> {{ instance.time }}</p>
     {% endfor %}
   </div>
 {% endblock %}

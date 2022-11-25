@@ -7,15 +7,12 @@
   <h1>Code: {{ flightinstance.all_code }}</h1>
 
   <p><strong>Status:</strong> {{ flightinstance.status }}</p>
-  <p><strong>Departure:</strong> {{ flightinstance.departure }}</p>
-  <p><strong>Duration:</strong> {{ flightinstance.duration }}</p>
+  <p><strong>Real time:</strong> {{ flightinstance.time }}</p>
 
   <div style="margin-left:20px;margin-top:20px">
     <h4>Flight</h4>
       <p><strong>Company:</strong> {{ flightinstance.flight.company }}</p>
-      <p><strong>Expected Departure:</strong> {{ flightinstance.flight.departure }}</p>
-      <p><strong>Expected Duration:</strong> {{ flightinstance.flight.duration }}</p>
-      <p><strong>Departure Airport:</strong> {{ flightinstance.flight.departure_airport }}</p>
-      <p><strong>Arrival Airport:</strong> {{ flightinstance.flight.arrival_airport }}</p>
+      <p><strong>Expected Time:</strong> {{ flightinstance.flight.time }}</p>
+      <p><strong>Airport:</strong> {{ flightinstance.flight.airport }}</p>
   </div>
 {% endblock %}
