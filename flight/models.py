@@ -12,11 +12,8 @@ class Airport(models.Model):
     # arrival (Generate by Flight)
     # departure (Generate by Flight)
 
-    def departure_instances(self):
-        return [inst for flight in self.departure.all() for inst in flight.instance.all()]
-
-    def arrival_instances(self):
-        return [inst for flight in self.arrival.all() for inst in flight.instance.all()]
+    def instances(self):
+        return [inst for flight in self.flight.all() for inst in flight.instance.all()]
 
     def __str__(self):
         return self.name
@@ -38,12 +35,11 @@ class Company(models.Model):
         db_table = 'company'
 
 class Flight(models.Model):
-    validate_code = RegexValidator('^[A-Z]{6}[0-9]+$', 'Code must be in the format ABCDEF1234')
+    validate_code = RegexValidator('^[A-Z]{3}[0-9]+$', 'Code must be in the format ABC1234')
     code = models.CharField(max_length=32, unique=True, help_text='Código unico', validators=[validate_code])
-    departure = models.TimeField(help_text='Expected flight departure time')
-    duration = models.DurationField(help_text='Expected duration')
-    departure_airport = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='departure')
-    arrival_airport = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='arrival')
+    direction = models.CharField(max_length=10, choices=[('A', 'Arrival'), ('D', 'Departure')], default='D')
+    time = models.TimeField(help_text='Expected time to arrive or depart')
+    airport = models.ForeignKey(Airport, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def arrive(self):
@@ -57,7 +53,7 @@ class Flight(models.Model):
 
     class Meta:
         db_table = 'flight'
-        ordering = ['departure']
+        ordering = ['time']
 
 
 class FlightInstance(models.Model):
@@ -76,14 +72,10 @@ class FlightInstance(models.Model):
     )
 
     status = models.CharField(max_length=32, default='Scheduled', choices=STATUS)
-    departure = models.DateTimeField(help_text='Real flight departure time')
-    duration = models.DurationField(help_text='Real duration')
+    time = models.DateTimeField(help_text='Real flight departure or arrived time')
 
     def all_code(self):
        return f'{self.flight.code}-{self.code}'
-
-    def arrive(self):
-        return self.departure + self.duration
 
     def __str__(self):
        return self.all_code()
@@ -93,7 +85,7 @@ class FlightInstance(models.Model):
 
     class Meta:
         db_table = 'flight_instance'
-        ordering = ['departure']
+        ordering = ['time']
         permissions = (
             ('can_list_report', 'List report'),
             ('can_arrive_report', 'Arrive airport report'),
