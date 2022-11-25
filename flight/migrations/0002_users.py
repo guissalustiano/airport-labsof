@@ -3,7 +3,6 @@
 from django.conf import settings
 from django.db import migrations
 from django.contrib.auth.management import create_permissions
-from django.db import transaction
 
 def create_users(apps, editor):
 
@@ -21,8 +20,6 @@ def create_users(apps, editor):
     pilot_ = User.objects.create_user('pilot', 'pilot@mail.com', '1234')
     
     u = User.objects.create_user('meu_pilot', 'pilot@mail.com', '1234')
-
-    # with transaction.atomic():
     
     for codename in ['view_flightinstance']:
         permission = Permission.objects.get(codename=codename)
