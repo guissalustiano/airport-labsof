@@ -15,15 +15,22 @@ def create_users(apps, editor):
     User = apps.get_model(settings.AUTH_USER_MODEL)
 
     admin_ = User.objects.create_superuser('admin', 'admin@mail.com', '1234')
+    
     manager_ = User.objects.create_user('manager', 'manager@mail.com', '1234')
-    operation_ = User.objects.create_user('operation', 'manager@mail.com', '1234')
+    operator_ = User.objects.create_user('operator', 'manager@mail.com', '1234')
     pilot_ = User.objects.create_user('pilot', 'pilot@mail.com', '1234')
     
-    u = User.objects.create_user('meu_pilot', 'pilot@mail.com', '1234')
-    
-    for codename in ['view_flightinstance']:
+    for codename in ['can_list_report','can_arrive_report','can_departure_report','can_status_report']:
         permission = Permission.objects.get(codename=codename)
-        u.user_permissions.add(permission)
+        manager_.user_permissions.add(permission)
+
+    for codename in ['change_flight','add_flight','view_flight','change_flightinstance','add_flightinstance','view_flightinstance']:
+        permission = Permission.objects.get(codename=codename)
+        operator_.user_permissions.add(permission)
+
+    for codename in ['view_flight', 'change_flight', 'view_flightinstance', 'change_flightinstance']:
+            permission = Permission.objects.get(codename=codename)
+            pilot_.user_permissions.add(permission)
 
 class Migration(migrations.Migration):
 
