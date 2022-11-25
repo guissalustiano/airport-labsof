@@ -11,18 +11,21 @@ def create_users(apps, editor):
         app_config.models_module = True
         create_permissions(app_config, verbosity=0)
         app_config.models_module = None
+
+    Permission = apps.get_model("auth.Permission")
     User = apps.get_model(settings.AUTH_USER_MODEL)
-    User.objects.create_superuser('admin', 'admin@mail.com', '1234')
-    User.objects.create_user('manager', 'manager@mail.com', '1234')
-    User.objects.create_user('operation', 'manager@mail.com', '1234')
-    User.objects.create_user('pilot', 'pilot@mail.com', '1234')
-    # breakpoint()
+
+    admin_ = User.objects.create_superuser('admin', 'admin@mail.com', '1234')
+    manager_ = User.objects.create_user('manager', 'manager@mail.com', '1234')
+    operation_ = User.objects.create_user('operation', 'manager@mail.com', '1234')
+    pilot_ = User.objects.create_user('pilot', 'pilot@mail.com', '1234')
     
     u = User.objects.create_user('meu_pilot', 'pilot@mail.com', '1234')
 
-    with transaction.atomic():
-        Permission = apps.get_model("auth.Permission")
-        permission = Permission.objects.get(codename='view_flightinstance')
+    # with transaction.atomic():
+    
+    for codename in ['view_flightinstance']:
+        permission = Permission.objects.get(codename=codename)
         u.user_permissions.add(permission)
 
 class Migration(migrations.Migration):
