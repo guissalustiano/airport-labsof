@@ -36,9 +36,9 @@ class Company(models.Model):
 
 class Flight(models.Model):
     validate_code = RegexValidator('^[A-Z]{3}[0-9]+$', 'Code must be in the format ABC1234')
-    code = models.CharField(max_length=32, unique=True, help_text='Código unico', validators=[validate_code])
+    code = models.CharField(max_length=32, unique=True, help_text='Unique code, 3 letters followed by numbers', validators=[validate_code])
     direction = models.CharField(max_length=10, choices=[('A', 'Arrival'), ('D', 'Departure')], default='D')
-    time = models.TimeField(help_text='Expected time to arrive or depart')
+    time = models.TimeField(help_text='Expected time for departure or arrival, in HH:MM format')
     airport = models.ForeignKey(Airport, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
@@ -61,7 +61,7 @@ class Flight(models.Model):
 
 class FlightInstance(models.Model):
     validate_code = RegexValidator('^[0-9]+$', 'Code must be in the format 1234')
-    code = models.CharField(max_length=32, unique=True, help_text='Code for instance, it will concat to flight', validators=[validate_code])
+    code = models.CharField(max_length=32, unique=True, help_text="Code for instance, it will concat to flight's code, numbers only", validators=[validate_code])
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='instance')
 
     # https://www.flightview.com/travelTools/FTHelp/Flight_Status.htm
@@ -76,7 +76,7 @@ class FlightInstance(models.Model):
 
 
     status = models.CharField(max_length=32, choices=STATUS)
-    time = models.DateTimeField(help_text='Real flight departure or arrived time')
+    time = models.DateTimeField(help_text="Real time for departure or arrival, in YYYY-MM-DD HH:MM format")
 
     def all_code(self):
        return f'{self.flight.code}-{self.code}'
