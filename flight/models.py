@@ -75,7 +75,7 @@ class FlightInstance(models.Model):
     )
 
 
-    status = models.CharField(max_length=32, choices=STATUS)
+    status = models.CharField(max_length=32, choices=STATUS, default='Scheduled')
     time = models.DateTimeField(help_text="Real time for departure or arrival, in YYYY-MM-DD HH:MM format")
 
     def all_code(self):

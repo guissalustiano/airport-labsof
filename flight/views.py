@@ -38,7 +38,7 @@ class FlightCreate(PermissionRequiredMixin, generic.CreateView):
 
 class FlightUpdate(PermissionRequiredMixin, generic.UpdateView):
     model = Flight
-    fields = ('departure_airport', 'arrival_airport', 'duration', 'departure')
+    fields = ('airport', 'direction', 'time')
     # readonly_fields = ('code', )
     permission_required = 'flight.change_flight'
 
