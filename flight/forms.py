@@ -2,32 +2,49 @@ from django import forms
 from .models import Flight, FlightInstance
 from datetime import datetime
 
+
 class FlightForm(forms.ModelForm):
     class Meta:
         model = Flight
-        fields = '__all__' 
+        fields = '__all__'
 
 
 class FlightInstanceForm(forms.ModelForm):
     def clean_status(self):
+        code = self.__dict__['cleaned_data']['flight']
+        flight = Flight.objects.get(code=code)
+        direction = flight.direction
 
         allowed_transitions = {
-            'Boarding': ['Boarding', 'Scheduled', 'Canceled'],
-            'Scheduled': ['Scheduled', 'Taxing', 'Canceled'],
-            'Taxing': ['Taxing', 'Ready', 'Canceled'],
-            'Ready': ['Ready', 'Authorized', 'Canceled'],
-            'Authorized': ['Authorized', 'In flight', 'Canceled'],
-            'In flight': ['In flight', 'Landed', 'Canceled'],
-            'Landed': ['Landed', 'Canceled'],
-            'Canceled': ['Canceled']
+            'D': {
+                'Boarding': ['Boarding', 'Scheduled', 'Canceled'],
+                'Scheduled': ['Scheduled', 'Taxing', 'Canceled'],
+                'Taxing': ['Taxing', 'Ready', 'Canceled'],
+                'Ready': ['Ready', 'Authorized', 'Canceled'],
+                'Authorized': ['Authorized', 'In flight', 'Canceled'],
+                'In flight': ['In flight', 'Canceled'],
+                'Canceled': ['Canceled']
+            },
+            'A': {
+                'In flight': ['In flight', 'Landed', 'Canceled'],
+                'Landed': ['Landed', 'Canceled'],
+                'Canceled': ['Canceled']
+            }
+        }
+
+        default_status = {
+            'A': 'In flight',
+            'D': 'Boarding'
         }
 
         selected_status = self.cleaned_data['status']
-        current_status = self.initial.get('status', 'Boarding')
+        current_status = self.initial.get('status', default_status[direction])
 
-        allowed_next_statuses = allowed_transitions.get(current_status, ['Boarding'])
+        allowed_next_statuses = allowed_transitions[direction].get(
+            current_status, default_status[direction])
         if selected_status not in allowed_next_statuses:
-            raise forms.ValidationError(f'Status {selected_status} not allowed')
+            raise forms.ValidationError(
+                f'Status {selected_status} not allowed')
         return selected_status
 
     def clean_time(self):
@@ -44,10 +61,7 @@ class FlightInstanceForm(forms.ModelForm):
         old_time = self.initial.get('time', datetime.now())
         return old_time
 
-    
     class Meta:
         model = FlightInstance
         fields = '__all__'
         exclude = ('code',)
-
-    
