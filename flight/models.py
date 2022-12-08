@@ -64,18 +64,19 @@ class FlightInstance(models.Model):
     code = models.CharField(max_length=32, unique=True, help_text="Code for instance, it will concat to flight's code, numbers only", validators=[validate_code])
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='instance')
 
-    # https://www.flightview.com/travelTools/FTHelp/Flight_Status.htm
     STATUS = (
-        ('Scheduled', 'Scheduled'), # Flight is not airborne. Departure and arrival times are according to airline's schedule.
-        ('Onboarding', 'Onboarding'), # 
-        ('Taxing', 'Taxing'), # Airplane has left the gate and is awaiting permission to fly
-        ('Departed', 'Departed'), # Flight has left the airport.
-        ('Arrived', 'Arrived'), # Flight has arrived at its destination gate.
-        ('Cancelled', 'Cancelled'), # Flight has been cancelled.
+        ('Boarding', 'Boarding'), # Embarcando
+        ('Scheduled', 'Scheduled'), # Programado
+        ('Taxing', 'Taxing'), # Taxiando
+        ('Ready', 'Ready'), # Pronto
+        ('Authorized', 'Authorized'), # Autorizado
+        ('In flight', 'In flight'), # Em voo
+        ('Landed', 'Landed'), # Aterrissado
+        ('Canceled', 'Canceled'), # Cancelado
     )
 
 
-    status = models.CharField(max_length=32, choices=STATUS, default='Scheduled')
+    status = models.CharField(max_length=32, choices=STATUS, default='Boarding')
     time = models.DateTimeField(help_text="Real time for departure or arrival, in YYYY-MM-DD HH:MM format")
 
     def all_code(self):

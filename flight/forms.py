@@ -12,18 +12,20 @@ class FlightInstanceForm(forms.ModelForm):
     def clean_status(self):
 
         allowed_transitions = {
-            'Scheduled': ['Scheduled', 'Onboarding', 'Cancelled'],
-            'Onboarding': ['Onboarding', 'Taxing', 'Cancelled'],
-            'Taxing': ['Taxing', 'Departed', 'Cancelled'],
-            'Departed': ['Departed', 'Arrived', 'Cancelled'],
-            'Arrived': ['Arrived'],
-            'Cancelled': ['Cancelled']
+            'Boarding': ['Boarding', 'Scheduled', 'Canceled'],
+            'Scheduled': ['Scheduled', 'Taxing', 'Canceled'],
+            'Taxing': ['Taxing', 'Ready', 'Canceled'],
+            'Ready': ['Ready', 'Authorized', 'Canceled'],
+            'Authorized': ['Authorized', 'In flight', 'Canceled'],
+            'In flight': ['In flight', 'Landed', 'Canceled'],
+            'Landed': ['Landed', 'Canceled'],
+            'Canceled': ['Canceled']
         }
 
         selected_status = self.cleaned_data['status']
-        current_status = self.initial.get('status', 'Scheduled')
+        current_status = self.initial.get('status', 'Boarding')
 
-        allowed_next_statuses = allowed_transitions.get(current_status, ['Scheduled'])
+        allowed_next_statuses = allowed_transitions.get(current_status, ['Boarding'])
         if selected_status not in allowed_next_statuses:
             raise forms.ValidationError(f'Status {selected_status} not allowed')
         return selected_status
@@ -32,9 +34,10 @@ class FlightInstanceForm(forms.ModelForm):
         code = self.__dict__['cleaned_data']['flight']
         flight = Flight.objects.get(code=code)
         direction = flight.__dict__['direction']
-        selected_status = self.cleaned_data['status']
-        arriving = selected_status == 'Arrived' and direction == 'A'
-        departing = selected_status == 'Departed' and direction == 'D'
+        # selected_status = self.cleaned_data['status'] Não sei exatamente pq, mas agora só tem 'flight' e 'time' no cleaned_data
+        selected_status = self.__dict__['data']['status']
+        arriving = selected_status == 'Landed' and direction == 'A'
+        departing = selected_status == 'In flight' and direction == 'D'
         if arriving or departing:
             return datetime.now()
 
