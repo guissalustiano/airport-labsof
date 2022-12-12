@@ -9,7 +9,7 @@
     <ul>
       {% for flightinstance in group %}
         <li>
-          <a href="{{ flightinstance.get_absolute_url }}">{{ flightinstance.all_code }}</a> ({{ flightinstance.departure}} to {{ flightinstance.arrive }})
+          <a href="{{ flightinstance.get_absolute_url }}">{{ flightinstance.all_code }}</a>, {{ flightinstance.flight.airport}}
         </li>
       {% endfor %}
     </ul>

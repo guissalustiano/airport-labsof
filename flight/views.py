@@ -24,7 +24,7 @@ def index(request):
 # Flight
 class FlightListView(PermissionRequiredMixin, generic.ListView):
     model = Flight
-    paginate_by = 10
+    paginate_by = 50
     permission_required = 'flight.view_flight'
 
 class FlightDetailView(PermissionRequiredMixin, generic.DetailView):
@@ -81,7 +81,7 @@ class FlightInstanceDelete(PermissionRequiredMixin, generic.DeleteView):
 # Airport
 class AirportListView(PermissionRequiredMixin, generic.ListView):
     model = Airport
-    paginate_by = 10
+    paginate_by = 50
     permission_required = 'airport.can_list'
 
 class AirportDetailView(PermissionRequiredMixin, generic.DetailView):
