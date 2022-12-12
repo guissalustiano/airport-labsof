@@ -16,7 +16,7 @@ class FlightInstanceForm(forms.ModelForm):
         direction = flight.direction
 
         allowed_transitions = {
-            'D': {
+            'Departure': {
                 'Boarding': ['Boarding', 'Scheduled', 'Canceled'],
                 'Scheduled': ['Scheduled', 'Taxing', 'Canceled'],
                 'Taxing': ['Taxing', 'Ready', 'Canceled'],
@@ -25,7 +25,7 @@ class FlightInstanceForm(forms.ModelForm):
                 'In flight': ['In flight', 'Canceled'],
                 'Canceled': ['Canceled']
             },
-            'A': {
+            'Arrival': {
                 'In flight': ['In flight', 'Landed', 'Canceled'],
                 'Landed': ['Landed', 'Canceled'],
                 'Canceled': ['Canceled']
@@ -33,8 +33,8 @@ class FlightInstanceForm(forms.ModelForm):
         }
 
         default_status = {
-            'A': 'In flight',
-            'D': 'Boarding'
+            'Arrival': 'In flight',
+            'Departure': 'Boarding'
         }
 
         selected_status = self.cleaned_data['status']
@@ -53,8 +53,8 @@ class FlightInstanceForm(forms.ModelForm):
         direction = flight.__dict__['direction']
         # selected_status = self.cleaned_data['status'] Não sei exatamente pq, mas agora só tem 'flight' e 'time' no cleaned_data
         selected_status = self.__dict__['data']['status']
-        arriving = selected_status == 'Landed' and direction == 'A'
-        departing = selected_status == 'In flight' and direction == 'D'
+        arriving = selected_status == 'Landed' and direction == 'Arrival'
+        departing = selected_status == 'In flight' and direction == 'Departure'
         if arriving or departing:
             return datetime.now()
 

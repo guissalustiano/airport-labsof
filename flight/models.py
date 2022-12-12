@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 
 from flight.helper import sum_time_timedelta
 
+
 class Airport(models.Model):
     name = models.CharField(max_length=256, null=False)
     code = models.CharField(max_length=32, unique=True, null=False)
@@ -24,6 +25,7 @@ class Airport(models.Model):
     class Meta:
         db_table = 'airport'
 
+
 class Company(models.Model):
     name = models.CharField(max_length=256)
     website = models.URLField(null=True)
@@ -34,11 +36,16 @@ class Company(models.Model):
     class Meta:
         db_table = 'company'
 
+
 class Flight(models.Model):
-    validate_code = RegexValidator('^[A-Z]{3}[0-9]+$', 'Code must be in the format ABC1234')
-    code = models.CharField(max_length=32, unique=True, help_text='Unique code, 3 letters followed by numbers', validators=[validate_code])
-    direction = models.CharField(max_length=10, choices=[('A', 'Arrival'), ('D', 'Departure')], default='D')
-    time = models.TimeField(help_text='Expected time for departure or arrival, in HH:MM format')
+    validate_code = RegexValidator(
+        '^[A-Z]{3}[0-9]+$', 'Code must be in the format ABC1234')
+    code = models.CharField(max_length=32, unique=True,
+                            help_text='Unique code, 3 letters followed by numbers', validators=[validate_code])
+    direction = models.CharField(max_length=10, choices=[(
+        'Arrival', 'Arrival'), ('Departure', 'Departure')], default='Departure')
+    time = models.TimeField(
+        help_text='Expected time for departure or arrival, in HH:MM format')
     airport = models.ForeignKey(Airport, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
@@ -53,37 +60,41 @@ class Flight(models.Model):
 
     def get_direction(self):
         return self.direction
-    
+
     class Meta:
         db_table = 'flight'
         ordering = ['time']
 
 
 class FlightInstance(models.Model):
-    validate_code = RegexValidator('^[0-9]+$', 'Code must be in the format 1234')
-    code = models.CharField(max_length=32, unique=True, help_text="Code for instance, it will concat to flight's code, numbers only", validators=[validate_code])
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='instance')
+    validate_code = RegexValidator(
+        '^[0-9]+$', 'Code must be in the format 1234')
+    code = models.CharField(max_length=32, unique=True,
+                            help_text="Code for instance, it will concat to flight's code, numbers only", validators=[validate_code])
+    flight = models.ForeignKey(
+        Flight, on_delete=models.CASCADE, related_name='instance')
 
     STATUS = (
-        ('Boarding', 'Boarding'), # Embarcando
-        ('Scheduled', 'Scheduled'), # Programado
-        ('Taxing', 'Taxing'), # Taxiando
-        ('Ready', 'Ready'), # Pronto
-        ('Authorized', 'Authorized'), # Autorizado
-        ('In flight', 'In flight'), # Em voo
-        ('Landed', 'Landed'), # Aterrissado
-        ('Canceled', 'Canceled'), # Cancelado
+        ('Boarding', 'Boarding'),  # Embarcando
+        ('Scheduled', 'Scheduled'),  # Programado
+        ('Taxing', 'Taxing'),  # Taxiando
+        ('Ready', 'Ready'),  # Pronto
+        ('Authorized', 'Authorized'),  # Autorizado
+        ('In flight', 'In flight'),  # Em voo
+        ('Landed', 'Landed'),  # Aterrissado
+        ('Canceled', 'Canceled'),  # Cancelado
     )
 
-
-    status = models.CharField(max_length=32, choices=STATUS, default='Boarding')
-    time = models.DateTimeField(help_text="Real time for departure or arrival, in YYYY-MM-DD HH:MM format")
+    status = models.CharField(
+        max_length=32, choices=STATUS, default='Boarding')
+    time = models.DateTimeField(
+        help_text="Real time for departure or arrival, in YYYY-MM-DD HH:MM format")
 
     def all_code(self):
-       return f'{self.flight.code}-{self.code}'
+        return f'{self.flight.code}-{self.code}'
 
     def __str__(self):
-       return self.all_code()
+        return self.all_code()
 
     def get_absolute_url(self):
         return reverse('flightinstance-detail', args=[str(self.id)])
