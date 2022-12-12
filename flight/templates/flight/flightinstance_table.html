@@ -27,8 +27,8 @@
 		{% if flightinstance.flight.direction == "Departure" %}
 
 		<tr>
-			<td>{{flightinstance.flight.airport.city}}-({{flightinstance.flight.airport.code}})</td>
-			<td>{{flightinstance.flight.code}} - {{flightinstance.code}}</td>
+			<td>{{flightinstance.flight.airport.city}}-{{flightinstance.flight.airport.code}}</td>
+			<td>{{flightinstance.flight.code}}-{{flightinstance.code}}</td>
 			<td>{{flightinstance.flight.company}}</td>
 			<td>{{flightinstance.status}}</td>
 			<td>{{flightinstance.flight.time}}</td>
@@ -54,7 +54,7 @@
 
 		<tr>
 			<td>{{flightinstance.flight.airport.city}}-({{flightinstance.flight.airport.code}})</td>
-			<td>{{flightinstance.flight.code}} - {{flightinstance.code}}</td>
+			<td>{{flightinstance.flight.code}}-{{flightinstance.code}}</td>
 			<td>{{flightinstance.flight.company}}</td>
 			<td>{{flightinstance.status}}</td>
 			<td>{{flightinstance.flight.time}}</td>

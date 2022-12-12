@@ -50,12 +50,12 @@ class FlightDelete(PermissionRequiredMixin, generic.DeleteView):
 # FlightInstance
 class FlightInstanceListView(PermissionRequiredMixin, generic.ListView):
     model = FlightInstance
-    paginate_by = 10
+    paginate_by = 50
     permission_required = 'flight.view_flightinstance'
 
 class FlightInstanceTableList(PermissionRequiredMixin, generic.ListView):
     model = FlightInstance
-    paginate_by = 10
+    paginate_by = 50
     permission_required = 'flight.view_flightinstance'
     template_name = 'flight/flightinstance_table.html'
 
