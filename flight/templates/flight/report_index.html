@@ -3,8 +3,20 @@
 {% block content %}
   <h1>Report</h1>
 
-  <h2>Group by:</h2>
+  <form method="get">
+      {{ filter.form.as_p }}
+      <input type="submit" />
+  </form>
+
+  {% if filter.qs %}
   <ul>
-    <li><a href="flight-instance-status">Flight instance status</a></li>
+    {% for flightinstance in filter.qs %}
+      <li>
+        <a href="{{ flightinstance.get_absolute_url }}">{{ flightinstance.all_code }}</a> ( Status: {{flightinstance.status}}, Real time: {{ flightinstance.time}})
+      </li>
+    {% endfor %}
   </ul>
+  {% else %}
+    <p>No match flight in the system.</p>
+  {% endif %}
 {% endblock %}

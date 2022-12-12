@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .models import Airport, Flight, FlightInstance
-from .forms import FlightForm, FlightInstanceForm
+from .forms import FlightForm, FlightInstanceFilterForm, FlightInstanceForm
 
 def index(request):
     """View function for home page of site."""
@@ -91,43 +91,5 @@ class AirportDetailView(PermissionRequiredMixin, generic.DetailView):
 # Report
 @permission_required('flight.can_list_report')
 def report_view(request):
-    return render(request, 'flight/report_index.html')
-
-def group_flights_by(f: Callable[[FlightInstance], str]):
-    """Auxiliar function to group flights instances"""
-    flights = FlightInstance.objects.all()
-    groups = dict()
-
-    for flight in flights:
-        key = f(flight)
-
-        if key not in groups:
-            groups[key] = []
-
-        groups[key].append(flight)
-
-    return groups
-
-@permission_required('flight.can_arrive_report')
-def report_arrival_airport_view(request):
-    context = {
-        'title': 'Report by arrival airport',
-        'groups': group_flights_by(lambda flight: flight.flight.arrival_airport),
-    }
-    return render(request, 'flight/report_list.html', context=context)
-
-@permission_required('flight.can_departure_report')
-def report_departure_airport_view(request):
-    context = {
-        'title': 'Report by departure airport',
-        'groups': group_flights_by(lambda flight: flight.flight.departure_airport),
-    }
-    return render(request, 'flight/report_list.html', context=context)
-
-@permission_required('flight.can_status_report')
-def report_flight_instance_status_view(request):
-    context = {
-        'title': 'Report by status',
-        'groups': group_flights_by(lambda flight: flight.status),
-    }
-    return render(request, 'flight/report_list.html', context=context)
+    f = FlightInstanceFilterForm(request.GET, queryset=FlightInstance.objects.all())
+    return render(request, 'flight/report_index.html', {'filter': f})

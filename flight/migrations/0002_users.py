@@ -17,7 +17,7 @@ def create_users(apps, editor):
     admin_ = User.objects.create_superuser('admin', 'admin@mail.com', '1234')
     
     manager_ = User.objects.create_user('manager', 'manager@mail.com', '1234')
-    operator_ = User.objects.create_user('operator', 'manager@mail.com', '1234')
+    operator_ = User.objects.create_user('operator', 'operator@mail.com', '1234')
     pilot_ = User.objects.create_user('pilot', 'pilot@mail.com', '1234')
     
     for codename in ['can_list_report','can_arrive_report','can_departure_report','can_status_report']:

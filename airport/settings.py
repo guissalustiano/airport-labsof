@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'flight.apps.FlightConfig',
     'axes',
+    'django_filters'
 ]
 
 MIDDLEWARE = [

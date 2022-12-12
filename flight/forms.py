@@ -1,4 +1,5 @@
 from django import forms
+import django_filters
 from .models import Flight, FlightInstance
 from datetime import datetime
 
@@ -65,3 +66,12 @@ class FlightInstanceForm(forms.ModelForm):
         model = FlightInstance
         fields = '__all__'
         exclude = ('code',)
+
+
+class FlightInstanceFilterForm(django_filters.FilterSet):
+    time = django_filters.IsoDateTimeFromToRangeFilter()
+
+
+    class Meta:
+        model = FlightInstance
+        fields = ['code', 'status', 'flight__direction', 'flight__airport', 'flight__company', 'time']
