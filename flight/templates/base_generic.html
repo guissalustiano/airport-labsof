@@ -34,9 +34,7 @@
               <li><a href="{% url 'flightinstance-create' %}">Create flights instance</a></li>
             {% endif %}
 
-            {% if perms.flight.view_flightinstance %}
-              <li><a href="{% url 'monitor' %}">Monitor all instances flights</a></li>
-            {% endif %}
+            <li><a href="{% url 'monitor' %}">Monitor all instances flights</a></li>
 
             {% if perms.flight.can_list_report %}
               <li><a href="{% url 'reports' %}">All reports</a></li>

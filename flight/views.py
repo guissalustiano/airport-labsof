@@ -53,10 +53,8 @@ class FlightInstanceListView(PermissionRequiredMixin, generic.ListView):
     paginate_by = 50
     permission_required = 'flight.view_flightinstance'
 
-class FlightInstanceTableList(PermissionRequiredMixin, generic.ListView):
+class FlightInstanceTableList(generic.ListView):
     model = FlightInstance
-    paginate_by = 50
-    permission_required = 'flight.view_flightinstance'
     template_name = 'flight/flightinstance_table.html'
 
 class FlightInstanceDetailView(PermissionRequiredMixin, generic.DetailView):
