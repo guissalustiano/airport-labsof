@@ -23,10 +23,11 @@ python manage.py test
 ```
 
 # Default users
-manager@mail.com
-operation@mail.com
-pilot@mail.com
+manager
+operator
+pilot
+admin
 
-senha: 1234$qwer
+senha: 1234
 
 link para a demo: rda(ponto)pythonanywhere(ponto)com
